@@ -14,18 +14,18 @@
     ],
     "require": {
         "php": ">=7.3",
-        "doctrine/annotations": "^1.0",
-        "doctrine/doctrine-bundle": "^2.2",
-        "doctrine/doctrine-migrations-bundle": "^3.0",
-        "doctrine/orm": "^2.8",
-        "symfony/console": "5.2.*",
-        "symfony/property-access": "5.2.*",
-        "symfony/property-info": "5.2.*",
-        "symfony/serializer": "5.2.*",
-        "symfony/uid": "5.2.*",
-        "symfony/yaml": "5.2.*",
-        "symfony/expression-language": "5.2.*",
-        "symfony/event-dispatcher": "5.2.*"
+        "doctrine/annotations": "^1.0|^2.0",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/orm": "^3.3",
+        "symfony/console": "5.2.*|6.*|7.*",
+        "symfony/property-access": "5.2.*|6.*|7.*",
+        "symfony/property-info": "5.2.*|6.*|7.*",
+        "symfony/serializer": "5.2.*|6.*|7.*",
+        "symfony/uid": "5.2.*|6.*|7.*",
+        "symfony/yaml": "5.2.*|6.*|7.*",
+        "symfony/expression-language": "5.2.*|6.*|7.*",
+        "symfony/event-dispatcher": "5.2.*|6.*|7.*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.2"
