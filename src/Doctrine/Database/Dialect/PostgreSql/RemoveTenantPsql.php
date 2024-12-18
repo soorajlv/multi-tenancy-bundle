@@ -18,15 +18,9 @@ class RemoveTenantPsql implements RemoveTenantInterface
      */
     protected $emTenant;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $dispatcher)
+    public function __construct(ManagerRegistry $registry, private readonly EventDispatcherInterface $dispatcher)
     {
         $this->emTenant = $registry->getManager('tenant');
-        $this->dispatcher = $dispatcher;
     }
 
     /**

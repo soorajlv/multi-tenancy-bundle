@@ -16,27 +16,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 abstract class AbstractDoctrineCommand extends Command
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * @var KernelInterface
-     */
-    private $appKernel;
-
-    /**
-     * @var Df
-     */
-    private $df;
-
-    public function __construct(ManagerRegistry $registry, KernelInterface $appKernel, DependencyFactory $df)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly KernelInterface $appKernel, private readonly DependencyFactory $df)
     {
         parent::__construct();
-        $this->registry = $registry;
-        $this->appKernel = $appKernel;
-        $this->df = $df;
     }
 
     protected function configure(): void

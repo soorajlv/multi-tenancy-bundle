@@ -7,16 +7,10 @@ namespace MultiTenancyBundle\Service;
 use MultiTenancyBundle\Exception\TenantNotFound;
 use MultiTenancyBundle\Repository\HostnameRepository;
 
-final class TenantDatabaseName
+final readonly class TenantDatabaseName
 {
-    /**
-     * @var HostnameRepository
-     */
-    private $hostnameRepository;
-
-    public function __construct(HostnameRepository $hostnameRepository)
+    public function __construct(private HostnameRepository $hostnameRepository)
     {
-        $this->hostnameRepository = $hostnameRepository;
     }
 
     /**

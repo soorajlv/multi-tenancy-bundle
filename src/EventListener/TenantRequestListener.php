@@ -11,21 +11,10 @@ use MultiTenancyBundle\Exception\TenantConnectionException;
 use MultiTenancyBundle\Repository\HostnameRepository;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-final class TenantRequestListener
+final readonly class TenantRequestListener
 {
-    /**
-     * @var TenantConnectionInterface
-     */
-    private $tenantConnection;
-    /**
-     * @var HostnameRepository
-     */
-    private $hostnameRepository;
-
-    public function __construct(TenantConnectionInterface $tenantConnection, HostnameRepository $hostnameRepository)
+    public function __construct(private TenantConnectionInterface $tenantConnection, private HostnameRepository $hostnameRepository)
     {
-        $this->tenantConnection = $tenantConnection;
-        $this->hostnameRepository = $hostnameRepository;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -52,7 +41,7 @@ final class TenantRequestListener
                 $tenantDb = $tenant->getTenant()->getUuid();
                 $this->tenantConnection->getDriverConnection();
                 $this->tenantConnection->tenantConnect($tenantDb);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 throw new TenantConnectionException("Error connecting to tenant");
             }
         }

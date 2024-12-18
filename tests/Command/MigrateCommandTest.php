@@ -113,13 +113,13 @@ class MigrateCommandTest extends TestCase
         $this->commandTester->execute(['em' => "tenant", '--tenant' => "tenant1"]);
 
         self::assertSame(0, $this->commandTester->getStatusCode());
-        self::assertStringContainsString('Executing tenant: 45b9d690-100c-4fa4-b133-996efdaf2499', trim($this->commandTester->getDisplay(true)));
+        self::assertStringContainsString('Executing tenant: 45b9d690-100c-4fa4-b133-996efdaf2499', trim((string) $this->commandTester->getDisplay(true)));
 
         // Execute all tenants
         $this->commandTester->execute(['em' => "tenant"]);
 
         self::assertSame(0, $this->commandTester->getStatusCode());
-        self::assertStringContainsString('Executing tenant: 45b9d690-100c-4fa4-b133-996efdaf2499', trim($this->commandTester->getDisplay(true)));
+        self::assertStringContainsString('Executing tenant: 45b9d690-100c-4fa4-b133-996efdaf2499', trim((string) $this->commandTester->getDisplay(true)));
     }
 
     private function registerMigrationInstance(MigrationsRepository $repository, Version $version, AbstractMigration $migration): void

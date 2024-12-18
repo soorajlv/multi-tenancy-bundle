@@ -26,17 +26,13 @@ final class MigrateCommand extends AbstractDoctrineCommand
      */
     private $tenantDatabaseName;
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTenantRepository(TenantRepository $tenantRepository)
     {
         $this->tenantRepository = $tenantRepository;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTenantDatabaseName(TenantDatabaseName $tenantDatabaseName)
     {
         $this->tenantDatabaseName = $tenantDatabaseName;

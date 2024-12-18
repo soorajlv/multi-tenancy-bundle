@@ -14,9 +14,9 @@ class EntityManagerFactoryTest extends TestCase
     {
         $evManager = $this->createMock(EventManager::class);
 
-        $paths = array('/path/to/entity/mapping/files');
+        $paths = ['/path/to/entity/mapping/files'];
         $config = Setup::createAnnotationMetadataConfiguration($paths);
-        $dbParams = array('driver' => 'pdo_sqlite', 'memory' => true);
+        $dbParams = ['driver' => 'pdo_sqlite', 'memory' => true];
 
         $tenantConnectionWrapper = new EntityManagerFactory();
         $tenantConnectionWrapper->create($dbParams, $config, $evManager);

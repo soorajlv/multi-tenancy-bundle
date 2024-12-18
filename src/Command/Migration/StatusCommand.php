@@ -17,9 +17,7 @@ final class StatusCommand extends AbstractDoctrineCommand
      */
     private $tenantDatabaseName;
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTenantDatabaseName(TenantDatabaseName $tenantDatabaseName)
     {
         $this->tenantDatabaseName = $tenantDatabaseName;

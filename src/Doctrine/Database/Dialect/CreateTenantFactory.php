@@ -22,17 +22,13 @@ class CreateTenantFactory
      */
     private $createTenantPsql;
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setCreateTenantMySql(CreateTenantMySql $createTenantMySql)
     {
         $this->createTenantMySql = $createTenantMySql;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setCreateTenantPsql(CreateTenantPsql $createTenantPsql)
     {
         $this->createTenantPsql = $createTenantPsql;
@@ -40,16 +36,11 @@ class CreateTenantFactory
 
     public function __invoke(TenantConnectionInterface $tenantConnection): CreateTenantInterface
     {
-        switch($tenantConnection->getDriverConnection()) {
-            case Driver::MYSQL:
-                $service = $this->createTenantMySql;
-                break;
-            case Driver::POSTGRESQL:
-                $service = $this->createTenantPsql;
-                break;
-            default:
-                throw new RuntimeException('Invalid driver. Driver supported mysql and postgresql.');
-        }
+        $service = match ($tenantConnection->getDriverConnection()) {
+            Driver::MYSQL => $this->createTenantMySql,
+            Driver::POSTGRESQL => $this->createTenantPsql,
+            default => throw new RuntimeException('Invalid driver. Driver supported mysql and postgresql.'),
+        };
 
         return $service;
     }

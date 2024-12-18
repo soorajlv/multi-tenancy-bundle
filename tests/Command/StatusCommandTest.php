@@ -69,7 +69,7 @@ class StatusCommandTest extends TestCase
         $this->commandTester->execute(['em' => "tenant", '--tenant' => "tenant1"]);
         $this->assertTrue(true);
 
-        $lines = array_map('trim', explode("\n", trim($this->commandTester->getDisplay(true))));
+        $lines = array_map('trim', explode("\n", trim((string) $this->commandTester->getDisplay(true))));
         $this->assertSame(
             [
                 '+----------------------+----------------------+------------------------------------------------------------------------+',

@@ -7,42 +7,28 @@ namespace MultiTenancyBundle\Entity;
 use MultiTenancyBundle\Repository\HostnameRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=HostnameRepository::class)
- */
+#[ORM\Entity(repositoryClass: HostnameRepository::class)]
 class Hostname
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $fqdn;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Tenant::class, inversedBy="hostnames", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Tenant::class, inversedBy: 'hostnames', fetch: 'EAGER')]
     private $tenant;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $created_at;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updated_at;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $deleted_at;
 
     public function getId(): ?int

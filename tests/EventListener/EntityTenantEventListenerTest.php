@@ -25,7 +25,7 @@ class EntityTenantEventListenerTest extends TestCase
         $tenant = new Tenant();
         $tenant->setUuid("45b9d690-100c-4fa4-b133-996efdaf2499");
 
-        $reflectionClass = new \ReflectionClass(get_class($tenant));
+        $reflectionClass = new \ReflectionClass($tenant::class);
         $idProperty = $reflectionClass->getProperty('id');
         $idProperty->setAccessible(true);
         $idProperty->setValue($tenant, 1);
