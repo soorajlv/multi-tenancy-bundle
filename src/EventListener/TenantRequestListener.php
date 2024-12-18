@@ -19,7 +19,7 @@ final readonly class TenantRequestListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             // don't do anything if it's not the master request
             return;
         }
