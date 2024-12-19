@@ -9,11 +9,12 @@ use MultiTenancyBundle\Doctrine\DBAL\TenantConnectionInterface;
 use MultiTenancyBundle\Exception\TenantNotFound;
 use MultiTenancyBundle\Exception\TenantConnectionException;
 use MultiTenancyBundle\Repository\HostnameRepository;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final readonly class TenantRequestListener
 {
-    public function __construct(private TenantConnectionInterface $tenantConnection, private HostnameRepository $hostnameRepository)
+    public function __construct(private TenantConnectionInterface $tenantConnection, private HostnameRepository $hostnameRepository, private ParameterBagInterface $parameterBag)
     {
     }
 
@@ -27,7 +28,7 @@ final readonly class TenantRequestListener
         $request = $event->getRequest();
         $domain = $request->getHost();
 
-        if ($this->isSubdomain($domain)) {
+        if ($domain != $this->parameterBag->get('app.fqdn')) {
             // Get tenant
             $site = explode('.', $domain)[0];
             $tenant = $this->hostnameRepository->findOneBy(["fqdn" => $site]);
