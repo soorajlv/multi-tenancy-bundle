@@ -21,7 +21,7 @@ class HostnameTest extends TestCase
         $hostname->setUpdatedAt($dt);
         $hostname->setDeletedAt($dt);
 
-        $reflectionClass = new \ReflectionClass(get_class($hostname));
+        $reflectionClass = new \ReflectionClass($hostname::class);
         $idProperty = $reflectionClass->getProperty('id');
         $idProperty->setAccessible(true);
         $idProperty->setValue($hostname, 1);

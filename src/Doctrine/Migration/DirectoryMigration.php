@@ -36,7 +36,7 @@ final class DirectoryMigration
             $config = new ConfigurationArray([
                 'migrations_paths' => $migration,
             ]);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             throw new DirectoryMigrationException("The doctrine_migrations.yaml file is invalid.");
         }
 

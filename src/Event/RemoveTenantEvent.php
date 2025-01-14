@@ -8,13 +8,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class RemoveTenantEvent extends Event
 {
-    protected $dbName;
-    protected $tenantId;
-
-    public function __construct(string $dbName, int $tenantId)
+    public function __construct(protected string $dbName, protected int $tenantId)
     {
-        $this->dbName = $dbName;
-        $this->tenantId = $tenantId;
     }
 
     public function dbName(): string

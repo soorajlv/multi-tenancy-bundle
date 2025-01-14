@@ -9,28 +9,18 @@ use MultiTenancyBundle\Doctrine\DBAL\TenantConnectionInterface;
 use MultiTenancyBundle\Exception\TenantNotFound;
 use MultiTenancyBundle\Exception\TenantConnectionException;
 use MultiTenancyBundle\Repository\HostnameRepository;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-final class TenantRequestListener
+final readonly class TenantRequestListener
 {
-    /**
-     * @var TenantConnectionInterface
-     */
-    private $tenantConnection;
-    /**
-     * @var HostnameRepository
-     */
-    private $hostnameRepository;
-
-    public function __construct(TenantConnectionInterface $tenantConnection, HostnameRepository $hostnameRepository)
+    public function __construct(private TenantConnectionInterface $tenantConnection, private HostnameRepository $hostnameRepository, private ParameterBagInterface $parameterBag)
     {
-        $this->tenantConnection = $tenantConnection;
-        $this->hostnameRepository = $hostnameRepository;
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             // don't do anything if it's not the master request
             return;
         }
@@ -38,7 +28,7 @@ final class TenantRequestListener
         $request = $event->getRequest();
         $domain = $request->getHost();
 
-        if ($this->isSubdomain($domain)) {
+        if ($domain != $this->parameterBag->get('app.fqdn')) {
             // Get tenant
             $site = explode('.', $domain)[0];
             $tenant = $this->hostnameRepository->findOneBy(["fqdn" => $site]);
@@ -52,7 +42,7 @@ final class TenantRequestListener
                 $tenantDb = $tenant->getTenant()->getUuid();
                 $this->tenantConnection->getDriverConnection();
                 $this->tenantConnection->tenantConnect($tenantDb);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 throw new TenantConnectionException("Error connecting to tenant");
             }
         }

@@ -6,12 +6,13 @@ namespace MultiTenancyBundle\Doctrine\Database;
 
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\EventManager;
+use Doctrine\DBAL\DriverManager;
 
 class EntityManagerFactory
 {
-    public function create(array $conn, Configuration $configuration, EventManager $eventManager): EntityManager
+    public function create(array $conn, Configuration $configuration): EntityManager
     {
-        return EntityManager::create($conn, $configuration, $eventManager);
+        $connection = DriverManager::getConnection($conn, $configuration);
+        return new EntityManager($connection, $configuration);
     }
 }

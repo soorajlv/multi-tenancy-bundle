@@ -13,6 +13,7 @@
 /public/bundles/
 /var/
 /vendor/
+/packages/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

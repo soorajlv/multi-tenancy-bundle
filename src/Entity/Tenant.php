@@ -9,41 +9,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=TenantRepository::class)
- */
+#[ORM\Entity(repositoryClass: TenantRepository::class)]
 class Tenant implements \JsonSerializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", unique=true)
-     */
+    #[ORM\Column(type: 'string', unique: true)]
     private $uuid;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $created_at;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updated_at;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $deleted_at;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Hostname::class, mappedBy="tenant", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Hostname::class, mappedBy: 'tenant', orphanRemoval: true)]
     private $hostnames;
 
     public function __construct()
@@ -140,9 +126,7 @@ class Tenant implements \JsonSerializable
             'id' => $this->getId(),
             'uuid' => $this->getUuid(),
             'created_at' => $this->getCreatedAt(),
-            'hostnames' => $this->getHostnames()->map(function ($object) {
-                return $object->getFqdn();
-            })
+            'hostnames' => $this->getHostnames()->map(fn($object) => $object->getFqdn())
         ];
     }
 }

@@ -14,7 +14,7 @@ class Utils
 {
     public function getSqliteConnection(): Connection
     {
-        $params = ['driver' => 'pdo_sqlite', 'memory' => true, 'wrapperClass' => 'MultiTenancyBundle\Doctrine\DBAL\TenantConnectionWrapper'];
+        $params = ['driver' => 'pdo_sqlite', 'memory' => true, 'wrapperClass' => \MultiTenancyBundle\Doctrine\DBAL\TenantConnectionWrapper::class];
 
         return DriverManager::getConnection($params);
     }

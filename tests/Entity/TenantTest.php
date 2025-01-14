@@ -19,7 +19,7 @@ class TenantTest extends TestCase
         $tenant->setUpdatedAt($dt);
         $tenant->setDeletedAt($dt);
 
-        $reflectionClass = new \ReflectionClass(get_class($tenant));
+        $reflectionClass = new \ReflectionClass($tenant::class);
         $idProperty = $reflectionClass->getProperty('id');
         $idProperty->setAccessible(true);
         $idProperty->setValue($tenant, 1);
