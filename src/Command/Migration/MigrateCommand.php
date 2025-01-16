@@ -8,6 +8,7 @@ use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand as DoctrineMigrateCommand;
 use MultiTenancyBundle\Repository\TenantRepository;
 use MultiTenancyBundle\Service\TenantDatabaseName;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -48,11 +49,20 @@ final class MigrateCommand extends AbstractDoctrineCommand
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the migration as a dry run.')
             ->addOption('query-time', null, InputOption::VALUE_NONE, 'Time all the queries individually.')
             ->addOption('allow-no-migration', null, InputOption::VALUE_NONE, 'Don\'t throw an exception if no migration is available (CI).')
+            ->addOption('default', null, InputOption::VALUE_NONE, 'Run the migration in default db, not in any tenant db.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $defaultDbMigration =  $input->getOption('default');
+
+        if ($defaultDbMigration) {
+
+            $this->migrate($input, $output);
+            return Command::SUCCESS;
+        }
+        
         $tenant = $input->getOption('tenant');
         
         if ($tenant) {
@@ -62,7 +72,7 @@ final class MigrateCommand extends AbstractDoctrineCommand
             $this->executeAllTenants($input, $output);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
@@ -90,7 +100,7 @@ final class MigrateCommand extends AbstractDoctrineCommand
      * @param string $tenantDb
      * @return void
      */
-    private function migrate(InputInterface $input, OutputInterface $output, string $tenantDb): void
+    private function migrate(InputInterface $input, OutputInterface $output, ?string $tenantDb = null): void
     {
         $df = $this->getDependencyFactory($input);
         $migrateCommand = new DoctrineMigrateCommand($df);
@@ -103,8 +113,12 @@ final class MigrateCommand extends AbstractDoctrineCommand
         ]);
         $newInput->setInteractive(false);
 
-        $output->writeln("<info>Executing tenant: {$tenantDb}</info>");
-        $this->setTenantConnection($df, $tenantDb);
+        if ($tenantDb) {
+            $output->writeln("<info>Executing tenant: {$tenantDb}</info>");
+            $this->setTenantConnection($df, $tenantDb);
+        } else {
+            $output->writeln("<info>Executing default DB</info>");
+        }
 
         // Execute the migration
         $migrateCommand->run($newInput, $output);
