@@ -54,10 +54,12 @@ class CreateTenantPsql implements CreateTenantInterface
 
         PsqlUtils::setSchema($newEmTenant->getConnection(), $dbName);
 
-        $meta = $newEmTenant->getMetadataFactory()->getAllMetadata();
+        //$meta = $newEmTenant->getMetadataFactory()->getAllMetadata();
 
         // Create tables schemas
-        $this->createSchemaFactory->create($newEmTenant, $meta);
+        //no need to create the tables there. This should happen by
+        //manually running the migration query
+        //$this->createSchemaFactory->create($newEmTenant, $meta);
 
         $event = new CreateTenantEvent($dbName, $tenantId);
         $this->dispatcher->dispatch($event, MultiTenancyEvents::TENANT_CREATED);
